@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
+// ✅ IMPORT IMAGES PROPERLY
+import img1 from "./assets/IMG_0808.jpg";
+import img2 from "./assets/IMG-20231203-WA0003-01.jpeg";
+import img3 from "./assets/IMG-20250224-WA0047.jpg";
+
 export default function App() {
   const [celebrated, setCelebrated] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
@@ -7,11 +12,8 @@ export default function App() {
   const noButtonRef = useRef(null);
   const audioRef = useRef(null);
 
-  const images = [
-    "src/assets/IMG_0808.jpg",
-    "src/assets/IMG-20231203-WA0003-01.jpeg",
-    "src/assets/IMG-20250224-WA0047.jpg",
-  ];
+  // ✅ USE IMPORTED IMAGES
+  const images = [img1, img2, img3];
 
   const loveLetter =
     "From the moment I met you, my world changed. You are my today, my tomorrow, and my forever. 💕 I promise to love you endlessly.";
@@ -21,7 +23,7 @@ export default function App() {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
   useEffect(() => {
     if (celebrated) {
@@ -46,6 +48,8 @@ export default function App() {
 
   const createCelebration = () => {
     const container = document.querySelector(".confetti-container");
+    if (!container) return;
+
     for (let i = 0; i < 150; i++) {
       const heart = document.createElement("div");
       heart.className = "confetti";
@@ -60,26 +64,24 @@ export default function App() {
   return (
     <div className="app">
       {!celebrated && (
-        <>
-          <section className="hero">
-            <h1>Will You Be My Valentine?</h1>
-            <div className="carousel">
-              <img src={images[currentImage]} alt="romantic" />
-            </div>
-            <div className="buttons">
-              <button className="yes" onClick={() => setCelebrated(true)}>
-                Yes 💕
-              </button>
-              <button
-                className="no"
-                ref={noButtonRef}
-                onMouseEnter={handleNoHover}
-              >
-                No
-              </button>
-            </div>
-          </section>
-        </>
+        <section className="hero">
+          <h1>Will You Be My Valentine?</h1>
+          <div className="carousel">
+            <img src={images[currentImage]} alt="romantic" />
+          </div>
+          <div className="buttons">
+            <button className="yes" onClick={() => setCelebrated(true)}>
+              Yes 💕
+            </button>
+            <button
+              className="no"
+              ref={noButtonRef}
+              onMouseEnter={handleNoHover}
+            >
+              No
+            </button>
+          </div>
+        </section>
       )}
 
       {celebrated && (
